@@ -49,3 +49,12 @@ footer {
 .photo-container img:hover {
     filter: grayscale(0%);
 }
+
+figure{
+    width: max-content;
+}
+figcaption {
+    text-align: center;
+    margin-top: -5px;
+    padding-top: -5px;
+}
