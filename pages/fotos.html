@@ -3,34 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>daniel.log.br</title>
+    <title>daniel.log.br - Fotos</title>
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 
 <header>
-    <h1>DANIEL.LOG.BR</h1>
+    <h1>DANIEL</h1>
     <div class="nav">
-        [ <a href="../index.html">log</a> ] 
-        [ <a href="fotos.html">fotos</a> ] 
-        [ <a href="sobre.html">sobre</a> ]
+        [<a href="../index.html"> log </a>] 
+        [<a href="fotos.html" class="active"> fotos </a>] 
+        [<a href="sobre.html"> sobre </a>]
     </div>
 </header>
 
 <main>
-    <div class="entry">
-        <div class="photo-container">
-            <figure>
-                <img src="../images/canoa_quebrada.jpg" width="400px" height="500px" alt="">
-                <figcaption>2026 fev - Passeio em Canoa Quebrada</figcaption>
-
+    <div class="gallery-grid">
+        <a href="#foto1" class="photo-item">
+            <img src="../images/canoa_quebrada.jpg" alt="Canoa Quebrada">
+        </a>
+        <div id="foto1" class="lightbox">
+            <a href="#" class="close-area"></a> <figure>
+                <img src="../images/canoa_quebrada.jpg" alt="Canoa Quebrada">
+                <figcaption style="margin-top:10px;">Canoa Quebrada - fev 2026</figcaption>
+                <a href="#" style="display:block; margin-top:20px; color:#999; text-decoration:none;">[ fechar ]</a>
             </figure>
         </div>
+
+        <!--
+        <a href="#foto2" class="photo-item">
+            <img src="../images/canoa_quebrada.jpg" alt="Foto 2">
+        </a>
+        <div id="foto2" class="lightbox">
+            <a href="#" class="close-area"></a>
+            <figure>
+                <img src="../images/canoa_quebrada.jpg" alt="Foto 2">
+                <figcaption style="margin-top:10px;">Legenda da Foto 2</figcaption>
+                <a href="#" style="display:block; margin-top:20px; color:#999; text-decoration:none;">[ fechar ]</a>
+            </figure>
+        </div>
+    -->
     </div>
 </main>
 
 <footer>
-    Configurado para durar.</p>
+   <p>Configurado para durar.</p>
 </footer>
 
 </body>
