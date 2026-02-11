@@ -1,0 +1,33 @@
+.cheat-sheet {
+            margin: 20px 0;
+        }
+        .comando {
+            font-weight: bold;
+            color: #3498db;
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .monitor-processo {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px dashed #ccc;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+        #terminal-spinner {
+            color: #3498db;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        #terminal-texto {
+            color: #888;
+        }

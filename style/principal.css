@@ -157,3 +157,46 @@ main p {
 .sobre-container p:first-of-type {
     margin-top: 15px;
 }
+
+.navegacao-retorno {
+    margin-top: 40px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+}
+
+.navegacao-retorno a {
+    text-decoration: none;
+    color: #3498db; 
+}
+
+.navegacao-retorno a:hover {
+    text-decoration: underline;
+}
+
+.entry {
+    margin-bottom: 2rem; /
+}
+
+.entry time {
+    display: block;
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #444; 
+    margin-bottom: 5px;
+}
+
+.entry a {
+    text-decoration: none;
+    color: #3498db; 
+    font-weight: normal;
+    transition: all 0.2s ease;
+}
+
+.entry a:hover {
+    text-decoration: underline;
+    color: #2980b9;
+}
+
+.entry a:visited {
+    color: #3498db;
+}

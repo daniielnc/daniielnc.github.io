@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>daniel | vim</title>
+    <link rel="stylesheet" href="/style/principal.css">
+    <link rel="stylesheet" href="/style/comandos.css">
+</head>
+<body>
+
+<header>
+    <h1>daniel</h1>
+    <nav class="nav">
+        [<a href="/"> log </a>] 
+        [<a href="/fotos"> fotos </a>] 
+        [<a href="/sobre"> sobre </a>]
+    </nav>
+</header>
+
+<main>
+    <article class="sobre-container">
+        <h2>vim: manual de sobrevivência</h2>
+
+        <div class="cheat-sheet">
+            <h3>1. comandos de saída</h3>
+            <ul>
+                <li><span class="comando">ESC</span> : garante que você não está no modo de inserção.</li>
+                <li><span class="comando">:q!</span> : sai sem salvar.</li>
+                <li><span class="comando">:wq</span> : salva e sai.</li>
+                <li><span class="comando">:x</span>  : similar ao :wq, mas só grava se houver alterações.</li>
+            </ul>
+
+            <h3>2. modos de operação</h3>
+            <ul>
+                <li><span class="comando">i</span> : modo de inserção (escrita).</li>
+                <li><span class="comando">v</span> : modo visual (seleção).</li>
+                <li><span class="comando">ESC</span> : retorno ao modo de comando.</li>
+            </ul>
+
+            <h3>3. movimentação básica</h3>
+            <ul>
+                <li><span class="comando">h j k l</span> : esquerda, baixo, cima, direita.</li>
+                <li><span class="comando">0</span> / <span class="comando">$</span> : início / fim da linha.</li>
+                <li><span class="comando">gg</span> / <span class="comando">G</span> : topo / fim do arquivo.</li>
+            </ul>
+
+            <h3>4. edições rápidas (no modo de comando)</h3>
+            <ul>
+                <li><span class="comando">x</span> : deleta o caractere sob o cursor.</li>
+                <li><span class="comando">dd</span> : deleta a linha inteira.</li>
+                <li><span class="comando">u</span> : desfaz a última ação (undo).</li>
+                <li><span class="comando">/termo</span> : busca por um termo (n para próximo).</li>
+            </ul>
+        </div>
+
+        <div class="monitor-processo">
+            <span id="terminal-spinner"></span>
+            <span id="terminal-texto">artigo em construção...</span>
+        </div>
+
+        <div class="navegacao-retorno">
+            [ <a href="/">voltar para o log</a> ]
+        </div>
+        
+    </article>
+</main>
+
+<script src="/scripts.js"></script>
+
+</body>
+</html>
