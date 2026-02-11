@@ -18,7 +18,7 @@ body {
 
 main {
     flex: 1; 
-    padding-top: 40px;
+    padding-top: 10px;
 }
 
 header { 
@@ -141,4 +141,16 @@ main p {
     padding: 2px 6px;
     border-radius: 3px;
     color: #000;
+}
+
+.sobre-container h2 {
+    font-size: 1.1rem;
+    margin-top: 10px;
+    text-transform: lowercase;
+    border-bottom: 1px dashed #eee;
+    display: inline-block;
+}
+
+.sobre-container p:first-of-type {
+    margin-top: 15px;
 }
