@@ -55,6 +55,9 @@ h1 {
     color: #000; 
 }
 
+.entry { margin-bottom: 2.5rem; }
+.date { font-weight: bold; display: block; margin-bottom: 5px; color: #444; }
+
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
