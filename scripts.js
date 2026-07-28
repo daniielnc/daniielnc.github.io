@@ -61,7 +61,6 @@ async function capturarEEnviarMetadados() {
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(payload)
       });
-      console.log("Metadados registrados com sucesso!");
     } catch (err) {
       console.error("Erro no envio:", err);
     }
