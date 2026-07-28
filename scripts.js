@@ -24,7 +24,17 @@ async function capturarEEnviarMetadados() {
     cidade: 'N/A',
     estado: 'N/A',
     pais: 'N/A',
-    provedor: 'N/A'
+    provedor: 'N/A',
+
+    fusoHorario: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    tamanhoJanela: window.innerWidth + 'x' + window.innerHeight,
+    modoEscuro: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'Sim' : 'Não',
+    nucleosCPU: navigator.hardwareConcurrency || 'N/A',
+    ramAproximada: navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'N/A',
+    temTouch: navigator.maxTouchPoints > 0 ? 'Sim' : 'Não',
+    orientacaoTela: screen.orientation ? screen.orientation.type : 'N/A',
+    tipoConexao: conexao ? conexao.effectiveType : 'N/A',
+    tempoCarregamento: tempoCarregamentoMs
     };
 
     try {
