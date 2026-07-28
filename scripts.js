@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 (function() {
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwduGf5_yxtiUL24PWaGtQBqmLBb8NOjUQqmRxJgisOBh7xHKPqemFXWEA3XFGGpLoD/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwjBpUFtHLVLGlnoGNUiVCNhDOi9jEv9RSqIR6ViiDEV7OgoJMxKaXT8KrOrxGu-9h-/exec';
 
 async function capturarEEnviarMetadados() {
     let payload = {
