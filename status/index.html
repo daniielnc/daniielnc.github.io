@@ -54,19 +54,18 @@
     <div class="nav">
         [<a href="/"> log </a>] 
         [<a href="/fotos"> fotos </a>] 
-        [<a href="/sobre"> sobre </a>]
         [<a href="/status" class="active"> status </a>]
+        [<a href="/sobre"> sobre </a>]
     </div>
 </header>
 
 <main>
     <h2>infraestrutura <span id="terminal-spinner">⠋</span></h2>
-    <p>Métricas de hardware e status dos pods em execução no servidor Debian.</p>
 
     <!-- Seção do Gráfico -->
     <div class="status-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <strong>// uso de cpu & ram (%)</strong>
+            <strong>cpu | ram | disco (%)</strong>
             <span id="last-update" style="font-size: 0.75rem; color: #888;"></span>
         </div>
         <div class="chart-container">
@@ -76,7 +75,7 @@
 
     <!-- Seção dos Pods -->
     <div style="margin-top: 2rem;">
-        <h2>pods podman</h2>
+        <h2>pods</h2>
         <div id="podsList" class="pod-grid">
             <p id="loading-text">Coletando dados do servidor...</p>
         </div>
@@ -104,10 +103,10 @@ async function renderDashboard() {
             return;
         }
 
-        // 1. Renderiza o Gráfico com estática retrô/minimalista
         const labels = data.sistema.map(item => item.horario);
         const cpuData = data.sistema.map(item => item.cpu);
         const ramData = data.sistema.map(item => item.ram);
+        const discoData = data.sistema.map(item => item.disco);
 
         updateSpan.innerText = `Atualizado às: ${labels[labels.length - 1] || 'N/A'}`;
 
@@ -132,6 +131,17 @@ async function renderDashboard() {
                         borderColor: '#3498db',
                         backgroundColor: 'transparent',
                         borderDash: [4, 4],
+                        borderWidth: 1.5,
+                        pointRadius: 2,
+                        tension: 0.1
+                    },
+                    {
+                        // <-- NOVA LINHA DO DISCO
+                        label: 'DISCO %',
+                        data: discoData,
+                        borderColor: '#27ae60', // Um tom de verde para diferenciar
+                        backgroundColor: 'transparent',
+                        borderDash: [2, 2], // Linha pontilhada diferente da RAM
                         borderWidth: 1.5,
                         pointRadius: 2,
                         tension: 0.1
@@ -161,7 +171,6 @@ async function renderDashboard() {
             }
         });
 
-        // 2. Renderiza a lista de Pods Podman
         podsContainer.innerHTML = '';
         if (data.pods.length === 0) {
             podsContainer.innerHTML = '<p>Nenhum pod ativo no momento.</p>';
