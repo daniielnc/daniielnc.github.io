@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>status | daniel.log.br</title>
+    <link rel="stylesheet" href="/style/principal.css">
+    <link rel="icon" href="data:,">
+    <!-- Chart.js para o gráfico -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .status-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            background-color: #fafafa;
+            margin-top: 15px;
+        }
+        .pod-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .pod-card {
+            border: 1px solid #eee;
+            padding: 10px;
+            background: #fff;
+            font-size: 0.85rem;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border-radius: 2px;
+        }
+        .badge-running { background-color: #d1fae5; color: #065f46; }
+        .badge-stopped { background-color: #fee2e2; color: #991b1b; }
+        .chart-container {
+            position: relative;
+            height: 280px;
+            width: 100%;
+        }
+        #loading-text {
+            font-style: italic;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>daniel</h1>
+    <div class="nav">
+        [<a href="/"> log </a>] 
+        [<a href="/fotos"> fotos </a>] 
+        [<a href="/sobre"> sobre </a>]
+        [<a href="/status" class="active"> status </a>]
+    </div>
+</header>
+
+<main>
+    <h2>infraestrutura <span id="terminal-spinner">⠋</span></h2>
+    <p>Métricas de hardware e status dos pods em execução no servidor Debian.</p>
+
+    <!-- Seção do Gráfico -->
+    <div class="status-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <strong>// uso de cpu & ram (%)</strong>
+            <span id="last-update" style="font-size: 0.75rem; color: #888;"></span>
+        </div>
+        <div class="chart-container">
+            <canvas id="metricsChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Seção dos Pods -->
+    <div style="margin-top: 2rem;">
+        <h2>pods podman</h2>
+        <div id="podsList" class="pod-grid">
+            <p id="loading-text">Coletando dados do servidor...</p>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>Feito para durar.</p>
+</footer>
+
+<script src="/scripts.js"></script>
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbwjBpUFtHLVLGlnoGNUiVCNhDOi9jEv9RSqIR6ViiDEV7OgoJMxKaXT8KrOrxGu-9h-/exec";
+
+async function renderDashboard() {
+    const podsContainer = document.getElementById('podsList');
+    const updateSpan = document.getElementById('last-update');
+
+    try {
+        const response = await fetch(API_URL, { redirect: 'follow' });
+        const data = await response.json();
+
+        if (!data.sistema || data.sistema.length === 0) {
+            podsContainer.innerHTML = "<p>Nenhum dado encontrado ainda na planilha.</p>";
+            return;
+        }
+
+        // 1. Renderiza o Gráfico com estática retrô/minimalista
+        const labels = data.sistema.map(item => item.horario);
+        const cpuData = data.sistema.map(item => item.cpu);
+        const ramData = data.sistema.map(item => item.ram);
+
+        updateSpan.innerText = `Atualizado às: ${labels[labels.length - 1] || 'N/A'}`;
+
+        const ctx = document.getElementById('metricsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'CPU %',
+                        data: cpuData,
+                        borderColor: '#000000',
+                        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                        borderWidth: 2,
+                        pointRadius: 2,
+                        tension: 0.1
+                    },
+                    {
+                        label: 'RAM %',
+                        data: ramData,
+                        borderColor: '#3498db',
+                        backgroundColor: 'transparent',
+                        borderDash: [4, 4],
+                        borderWidth: 1.5,
+                        pointRadius: 2,
+                        tension: 0.1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        ticks: { font: { family: 'Courier New' } },
+                        grid: { color: '#eee' }
+                    },
+                    y: {
+                        min: 0,
+                        max: 100,
+                        ticks: { font: { family: 'Courier New' } },
+                        grid: { color: '#eee' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { font: { family: 'Courier New' } }
+                    }
+                }
+            }
+        });
+
+        // 2. Renderiza a lista de Pods Podman
+        podsContainer.innerHTML = '';
+        if (data.pods.length === 0) {
+            podsContainer.innerHTML = '<p>Nenhum pod ativo no momento.</p>';
+        } else {
+            data.pods.forEach(pod => {
+                const isRunning = pod.status.toLowerCase().includes('running');
+                podsContainer.innerHTML += `
+                    <div class="pod-card">
+                        <div style="font-weight: bold; margin-bottom: 5px;">${pod.nome}</div>
+                        <div>Status: <span class="badge ${isRunning ? 'badge-running' : 'badge-stopped'}">${pod.status}</span></div>
+                        <div style="color: #666; margin-top: 3px;">Restarts: ${pod.reinicios}</div>
+                    </div>
+                `;
+            });
+        }
+
+    } catch (err) {
+        console.error("Erro ao carregar métricas:", err);
+        podsContainer.innerHTML = "<p>Erro ao conectar com a API de monitoramento.</p>";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", renderDashboard);
+</script>
+</body>
+</html>
