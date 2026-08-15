@@ -168,8 +168,10 @@ async function renderDashboard() {
                         },
                         ticks: { 
                             font: { size: 10, family: 'Courier New' },
-                            maxRotation: 45,
-                            minRotation: 45
+                            maxRotation: 0,
+                            minRotation: 0,
+                            autoSkip: true,
+                            maxTicksLimit: 12
                         }
                     },
                     y: {
