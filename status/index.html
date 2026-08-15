@@ -106,18 +106,23 @@ async function renderDashboard() {
         // Extrai apenas a hora (HH:mm) do formato ISO ou do formato com espaço
         const labels = data.sistema.map(item => {
             if (!item.horario) return '';
-            if (item.horario.includes('T')) {
-                // Pega a parte depois do 'T' e corta os segundos/milissegundos (mantém HH:mm)
-                return item.horario.split('T')[1].substring(0, 5);
+            try {
+                const date = new Date(item.horario);
+                // Subtrai 3 horas para ajustar para o fuso -3
+                date.setHours(date.getHours());
+                const h = String(date.getHours()).padStart(2, '0');
+                const m = String(date.getMinutes()).padStart(2, '0');
+                return `${h}:${m}`;
+            } catch (e) {
+                // Fallback caso o formato venha diferente
+                return item.horario.substring(11, 16) || item.horario;
             }
-            if (item.horario.includes(' ')) {
-                return item.horario.split(' ')[1].substring(0, 5);
-            }
-            return item.horario;
         });
         
         const cpuData = data.sistema.map(item => item.cpu);
+        const cpumData = data.sistema.map(item => item.cpu_max);
         const ramData = data.sistema.map(item => item.ram);
+        const rammData = data.sistema.map(item => item.ram_max);
         const discoData = data.sistema.map(item => item.disco);
         const ex01Data = data.sistema.map(item => item.disco_ex_1);
         const ex02Data = data.sistema.map(item => item.disco_ex_2);
@@ -130,36 +135,40 @@ async function renderDashboard() {
             data: {
                 labels: labels,
                 datasets: [
-                    { label: 'CPU', data: cpuData, borderColor: '#1f2937', borderWidth: 2, pointRadius: 0, tension: 0.3 },
-                    { label: 'RAM', data: ramData, borderColor: '#4b5563', borderWidth: 1.5, pointRadius: 0, tension: 0.3, borderDash: [4, 4] },
-                    { label: 'DISCO', data: discoData, borderColor: '#6b7280', borderWidth: 1.5, pointRadius: 0, tension: 0.3 },
-                    { label: 'Ex01', data: ex01Data, borderColor: '#9ca3af', borderWidth: 1, pointRadius: 0, tension: 0.3 },
-                    { label: 'Ex02', data: ex02Data, borderColor: '#d1d5db', borderWidth: 1, pointRadius: 0, tension: 0.3 }
+                    { label: 'CPU', data: cpuData, borderColor: '#2563eb', backgroundColor: '#2563eb', borderWidth: 2, pointRadius: 0, tension: 0.3 },
+                    { label: 'CPU máx', data: cpumData, borderColor: '#F20707', backgroundColor: '#F20707', borderWidth: 1, pointRadius: 0, tension: 0.3, borderDash: [4, 4] },
+                    { label: 'RAM', data: ramData, borderColor: '#8b5cf6', backgroundColor: '#8b5cf6', borderWidth: 2, pointRadius: 0, tension: 0.3},
+                    { label: 'RAM máx', data: rammData, borderColor: '#F2D307', backgroundColor: '#F2D307', borderWidth: 1, pointRadius: 0, tension: 0.3, borderDash: [4, 4]},
+                    { label: 'DISCO', data: discoData, borderColor: '#10b981', backgroundColor: '#10b981', borderWidth: 1.5, pointRadius: 0, tension: 0.3 },
+                    { label: 'Ex01', data: ex01Data, borderColor: '#f59e0b', backgroundColor: '#f59e0b', borderWidth: 1, pointRadius: 0, tension: 0.3 },
+                    { label: 'Ex02', data: ex02Data, borderColor: '#ec4899', backgroundColor: '#ec4899', borderWidth: 1, pointRadius: 0, tension: 0.3 }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                interaction: { 
-                    intersect: false, 
-                    mode: 'index' 
-                },
+                interaction: { intersect: false, mode: 'index' },
                 plugins: {
                     legend: {
                         position: 'top',
-                        labels: { boxWidth: 12, font: { size: 10, family: 'Courier New' }, usePointStyle: true }
+                        labels: { 
+                            boxWidth: 12, 
+                            font: { size: 10, family: 'Courier New' }, 
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
                     }
                 },
                 scales: {
                     x: {
                         grid: {
-                            display: true,          // Ativa as hastes verticais para cada ponto
-                            color: '#f0f0f0',       // Cor bem sutil e fina
+                            display: true,
+                            color: '#f0f0f0',
                             drawBorder: false
                         },
                         ticks: { 
                             font: { size: 10, family: 'Courier New' },
-                            maxRotation: 45,        // Inclina levemente os horários se necessário
+                            maxRotation: 45,
                             minRotation: 45
                         }
                     },
