@@ -60,12 +60,12 @@
 </header>
 
 <main>
-    <h2>infraestrutura <span id="terminal-spinner">⠋</span></h2>
+    <h2>Infra <span id="terminal-spinner">⠋</span></h2>
 
     <!-- Seção do Gráfico -->
     <div class="status-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <strong>cpu | ram | disco (%)</strong>
+            <strong>cpu | ram | disco | ex01 | ex02 (%)</strong>
             <span id="last-update" style="font-size: 0.75rem; color: #888;"></span>
         </div>
         <div class="chart-container">
@@ -107,6 +107,9 @@ async function renderDashboard() {
         const cpuData = data.sistema.map(item => item.cpu);
         const ramData = data.sistema.map(item => item.ram);
         const discoData = data.sistema.map(item => item.disco);
+        const ex01Data = data.sistema.map(item => item.disco_ex_1);
+        const ex02Data = data.sistema.map(item => item.disco_ex_2);
+
 
         updateSpan.innerText = `Atualizado às: ${labels[labels.length - 1] || 'N/A'}`;
 
@@ -136,10 +139,29 @@ async function renderDashboard() {
                         tension: 0.1
                     },
                     {
-                        // <-- NOVA LINHA DO DISCO
                         label: 'DISCO %',
                         data: discoData,
-                        borderColor: '#27ae60', // Um tom de verde para diferenciar
+                        borderColor: '#27ae60', 
+                        backgroundColor: 'transparent',
+                        borderDash: [2, 2], // Linha pontilhada diferente da RAM
+                        borderWidth: 1.5,
+                        pointRadius: 2,
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Ex01 %',
+                        data: ex01Data,
+                        borderColor: '#27ae60', 
+                        backgroundColor: 'transparent',
+                        borderDash: [2, 2], // Linha pontilhada diferente da RAM
+                        borderWidth: 1.5,
+                        pointRadius: 2,
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Ex02 %',
+                        data: ex02Data,
+                        borderColor: '#27ae60', 
                         backgroundColor: 'transparent',
                         borderDash: [2, 2], // Linha pontilhada diferente da RAM
                         borderWidth: 1.5,
