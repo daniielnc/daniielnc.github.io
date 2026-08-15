@@ -60,7 +60,7 @@
 </header>
 
 <main>
-    <h2>Infra<span id="terminal-spinner">⠋</span></h2>
+    <h2>infra <span id="terminal-spinner">⠋</span></h2>
 
     <!-- Seção do Gráfico -->
     <div class="status-card">
@@ -103,15 +103,15 @@ async function renderDashboard() {
             return;
         }
 
-        const labels = data.sistema.map(item => item.horario);
+        const labels = data.sistema.map(item => item.horario.includes(' ') ? item.horario.split(' ')[1] : item.horario);
+        
         const cpuData = data.sistema.map(item => item.cpu);
         const ramData = data.sistema.map(item => item.ram);
         const discoData = data.sistema.map(item => item.disco);
         const ex01Data = data.sistema.map(item => item.disco_ex_1);
         const ex02Data = data.sistema.map(item => item.disco_ex_2);
 
-
-        updateSpan.innerText = `Atualizado às: ${labels[labels.length - 1] || 'N/A'}`;
+        updateSpan.innerText = `Atualizado: ${labels[labels.length - 1]}`;
 
         const ctx = document.getElementById('metricsChart').getContext('2d');
         new Chart(ctx, {
@@ -119,76 +119,26 @@ async function renderDashboard() {
             data: {
                 labels: labels,
                 datasets: [
-                    {
-                        label: 'CPU %',
-                        data: cpuData,
-                        borderColor: '#000000',
-                        backgroundColor: 'rgba(0, 0, 0, 0.05)',
-                        borderWidth: 2,
-                        pointRadius: 2,
-                        tension: 0.1
-                    },
-                    {
-                        label: 'RAM %',
-                        data: ramData,
-                        borderColor: '#3498db',
-                        backgroundColor: 'transparent',
-                        borderDash: [4, 4],
-                        borderWidth: 1.5,
-                        pointRadius: 2,
-                        tension: 0.1
-                    },
-                    {
-                        label: 'DISCO %',
-                        data: discoData,
-                        borderColor: '#27ae60', 
-                        backgroundColor: 'transparent',
-                        borderDash: [2, 2], // Linha pontilhada diferente da RAM
-                        borderWidth: 1.5,
-                        pointRadius: 2,
-                        tension: 0.1
-                    },
-                    {
-                        label: 'Ex01 %',
-                        data: ex01Data,
-                        borderColor: '#27ae60', 
-                        backgroundColor: 'transparent',
-                        borderDash: [2, 2], // Linha pontilhada diferente da RAM
-                        borderWidth: 1.5,
-                        pointRadius: 2,
-                        tension: 0.1
-                    },
-                    {
-                        label: 'Ex02 %',
-                        data: ex02Data,
-                        borderColor: '#27ae60', 
-                        backgroundColor: 'transparent',
-                        borderDash: [2, 2], // Linha pontilhada diferente da RAM
-                        borderWidth: 1.5,
-                        pointRadius: 2,
-                        tension: 0.1
-                    }
+                    { label: 'CPU', data: cpuData, borderColor: '#1f2937', borderWidth: 2, pointRadius: 0, tension: 0.3 },
+                    { label: 'RAM', data: ramData, borderColor: '#4b5563', borderWidth: 1.5, pointRadius: 0, tension: 0.3, borderDash: [4, 4] },
+                    { label: 'DISCO', data: discoData, borderColor: '#6b7280', borderWidth: 1.5, pointRadius: 0, tension: 0.3 },
+                    { label: 'Ex01', data: ex01Data, borderColor: '#9ca3af', borderWidth: 1, pointRadius: 0, tension: 0.3 },
+                    { label: 'Ex02', data: ex02Data, borderColor: '#d1d5db', borderWidth: 1, pointRadius: 0, tension: 0.3 }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        ticks: { font: { family: 'Courier New' } },
-                        grid: { color: '#eee' }
-                    },
-                    y: {
-                        min: 0,
-                        max: 100,
-                        ticks: { font: { family: 'Courier New' } },
-                        grid: { color: '#eee' }
-                    }
-                },
+                interaction: { intersect: false, mode: 'index' },
                 plugins: {
                     legend: {
-                        labels: { font: { family: 'Courier New' } }
+                        position: 'top',
+                        labels: { boxWidth: 12, font: { size: 10, family: 'Courier New' }, usePointStyle: true }
                     }
+                },
+                scales: {
+                    x: { ticks: { font: { size: 10, family: 'Courier New' } }, grid: { display: false } },
+                    y: { min: 0, max: 100, ticks: { font: { size: 10, family: 'Courier New' } }, grid: { color: '#f3f4f6' } }
                 }
             }
         });
