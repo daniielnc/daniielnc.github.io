@@ -65,7 +65,7 @@
     <!-- Seção do Gráfico -->
     <div class="status-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <strong>cpu | ram | disco | ex01 | ex02 (%)</strong>
+            <strong>cpu | ram | disco (%)</strong>
             <span id="last-update" style="font-size: 0.75rem; color: #888;"></span>
         </div>
         <div class="chart-container">
@@ -124,8 +124,7 @@ async function renderDashboard() {
         const ramData = data.sistema.map(item => item.ram);
         const rammData = data.sistema.map(item => item.ram_max);
         const discoData = data.sistema.map(item => item.disco);
-        const ex01Data = data.sistema.map(item => item.disco_ex_1);
-        const ex02Data = data.sistema.map(item => item.disco_ex_2);
+
 
         updateSpan.innerText = `Atualizado: ${labels[labels.length - 1]}`;
 
@@ -140,8 +139,7 @@ async function renderDashboard() {
                     { label: 'RAM', data: ramData, borderColor: '#8b5cf6', backgroundColor: '#8b5cf6', borderWidth: 2, pointRadius: 0, tension: 0.3},
                     { label: 'RAM máx', data: rammData, borderColor: '#F2D307', backgroundColor: '#F2D307', borderWidth: 1, pointRadius: 0, tension: 0.3, borderDash: [4, 4]},
                     { label: 'DISCO', data: discoData, borderColor: '#10b981', backgroundColor: '#10b981', borderWidth: 1.5, pointRadius: 0, tension: 0.3 },
-                    { label: 'Ex01', data: ex01Data, borderColor: '#f59e0b', backgroundColor: '#f59e0b', borderWidth: 1, pointRadius: 0, tension: 0.3 },
-                    { label: 'Ex02', data: ex02Data, borderColor: '#ec4899', backgroundColor: '#ec4899', borderWidth: 1, pointRadius: 0, tension: 0.3 }
+                   
                 ]
             },
             options: {
@@ -195,6 +193,7 @@ async function renderDashboard() {
                         <div style="font-weight: bold; margin-bottom: 5px;">${pod.nome}</div>
                         <div>Status: <span class="badge ${isRunning ? 'badge-running' : 'badge-stopped'}">${pod.status}</span></div>
                         <div style="color: #666; margin-top: 3px;">Restarts: ${pod.reinicios}</div>
+                        <div style="color: #666; margin-top: 3px;">${pod.uptime}</div>
                     </div>
                 `;
             });
